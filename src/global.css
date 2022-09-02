@@ -1,0 +1,5 @@
+.global_span{
+  color: rgb(24, 144, 255);
+  cursor: pointer;
+  margin: 0 10px;
+}

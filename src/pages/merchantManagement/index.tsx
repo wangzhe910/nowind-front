@@ -1,5 +1,7 @@
 import { connect } from 'dva';
 import { useEffect } from 'react';
+import { Button, Modal } from 'antd';
+import { PlusOutlined, SearchOutlined } from '@ant-design/icons';
 import DataTable from '@/components/table/index';
 
 const namespace = 'merchantManagement';
@@ -15,6 +17,7 @@ const MerchantManagement = (props: any) => {
       title: '商户名称',
       dataIndex: 'merchantName',
       key: 'merchantName',
+      width: 150,
     },
     {
       title: '商户号',
@@ -42,9 +45,15 @@ const MerchantManagement = (props: any) => {
     {
       title: '操作',
       dataIndex: '',
+      width: 200,
       key: 'action',
       render: (_: String, record: Object) => {
-        return <a>编辑</a>;
+        return (
+          <>
+            <span className="global_span">编辑</span>
+            <span className="global_span">删除</span>
+          </>
+        );
       },
     },
   ];
@@ -90,6 +99,24 @@ const MerchantManagement = (props: any) => {
       status: true,
     },
   ];
+  tableData.push(tableData[0]);
+  tableData.push(tableData[0]);
+  tableData.push(tableData[0]);
+  tableData.push(tableData[0]);
+  tableData.push(tableData[0]);
+  tableData.push(tableData[0]);
+  tableData.push(tableData[0]);
+  tableData.push(tableData[0]);
+  tableData.push(tableData[0]);
+  tableData.push(tableData[0]);
+  tableData.push(tableData[0]);
+  tableData.push(tableData[0]);
+  tableData.push(tableData[0]);
+  tableData.push(tableData[0]);
+  tableData.push(tableData[0]);
+  tableData.push(tableData[0]);
+  tableData.push(tableData[0]);
+  tableData.push(tableData[0]);
 
   const getList = (params = {}) => {
     dispatch({
@@ -100,11 +127,28 @@ const MerchantManagement = (props: any) => {
 
   useEffect(() => {
     getList();
-    console.log('props: ', props);
   }, []);
   return (
     <div>
-      <DataTable columns={columns} tableData={tableData} />
+      <div style={{ padding: '10px 20px 20px' }}>
+        <Button
+          type="primary"
+          icon={<PlusOutlined />}
+          style={{ marginRight: 10 }}
+        >
+          新增
+        </Button>
+        <Button type="primary" icon={<SearchOutlined />}>
+          查询
+        </Button>
+      </div>
+      <DataTable
+        columns={columns}
+        tableData={tableData}
+        fetchTable={(page, size) => {
+          console.log('page: ', page, 'size: ', size);
+        }}
+      />
     </div>
   );
 };

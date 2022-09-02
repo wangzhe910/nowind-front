@@ -1,11 +1,14 @@
 import Axios from 'axios';
 import { notification } from 'antd';
 
-const PLATFORM = process.env.PLATFORM; //process.env.PLATFORM
+const PLATFORM = process.env; //process.env.PLATFORM
 console.log('PLATFORM: ', process.env);
 // 请求超时时间
 Axios.defaults.timeout = 15000;
-Axios.defaults.baseURL = 'http://120.77.252.213:8010';
+Axios.defaults.baseURL =
+  PLATFORM.NODE_ENV === 'development'
+    ? 'http://120.77.252.213:8011/nowind-auth/'
+    : '';
 
 // post请求头的设置
 Axios.defaults.headers.post['Content-Type'] =
@@ -107,9 +110,45 @@ export function post(url, params) {
   });
 }
 
+/**
+ * put方法，对应put请求
+ * @param {String} url [请求的url地址]
+ * @param {Object} params [请求时携带的参数]
+ */
+export function put(url, params) {
+  return new Promise((resolve, reject) => {
+    axios
+      .put(url, params)
+      .then((res) => {
+        resolve(res.data);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+}
+
+/**
+ * axiosDelete方法，对应delete请求
+ * @param {String} url [请求的url地址]
+ * @param {Object} params [请求时携带的参数]
+ */
+export function axiosDelete(url, params) {
+  return new Promise((resolve, reject) => {
+    axios
+      .delete(url, { data: params })
+      .then((res) => {
+        resolve(res.data);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+}
+
 export function postWithNoToken(url, params) {
   return new Promise((resolve, reject) => {
-    console.log('url', url);
+    // console.log('url', url);
     instanceAxios
       .post(url, params)
       .then((res) => {
@@ -120,6 +159,7 @@ export function postWithNoToken(url, params) {
       });
   });
 }
+
 export function getWithNoToken(url, params = {}) {
   return new Promise((resolve, reject) => {
     instanceAxios

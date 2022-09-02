@@ -20,8 +20,8 @@ export default defineConfig({
   routes: pageRoutes,
   fastRefresh: {},
   proxy: {
-    '/merchant': {
-      target: 'http://120.77.252.213:8010',
+    '/nowind-auth': {
+      target: 'http://120.77.252.213:8011/nowind-auth/',
       // target:
       //   process.env.NODE_ENV === 'development'
       //     ? 'http://120.77.252.213:8010'
