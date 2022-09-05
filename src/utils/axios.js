@@ -1,5 +1,6 @@
 import Axios from 'axios';
 import { notification } from 'antd';
+import { TOKEN, USER } from './constant';
 
 const PLATFORM = process.env; //process.env.PLATFORM
 console.log('PLATFORM: ', process.env);
@@ -23,9 +24,9 @@ const instanceAxios = Axios.create();
 axios.interceptors.request.use(
   (config) => {
     // 可在此设置要发送的token
-    let token = localStorage.getItem('sales_token');
+    let token = localStorage.getItem(TOKEN);
     if (token) {
-      token && (config.headers.Authorization = token);
+      token && (config.headers['Access-Token'] = token);
       return config;
     } else {
       console.log('没有token');
@@ -40,15 +41,24 @@ axios.interceptors.request.use(
 // axios response拦截器
 axios.interceptors.response.use(
   (response) => {
+    console.log('response: ', response);
     // 如果返回的状态码为200，说明接口请求成功，可以正常拿到数据
     // 否则的话抛出错误 结合自身业务和后台返回的接口状态约定写response拦截器
-    if (
-      response.status === 200 &&
-      (response.data.code === 1 || response.data.code === 0)
-    ) {
+    if (response.status === 200 && response.data.code === 200) {
       return Promise.resolve(response);
     } else {
       const msg = (response.data && response.data.msg) || '请求出错了';
+      console.log('请求发送成功，但是服务端返回错误了，错误信息：', msg);
+      if (response.data.code === 448) {
+        notification.warning({
+          message: 'token无效,请重新登录',
+        });
+        localStorage.removeItem(TOKEN);
+        localStorage.removeItem(USER);
+        setTimeout(() => {
+          window.location.href = '/login';
+        }, 300);
+      }
       return Promise.reject(response);
     }
   },

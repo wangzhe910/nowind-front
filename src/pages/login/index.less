@@ -1,7 +1,7 @@
 .login {
   width: 100%;
   height: 100vh;
-  background-image: url(../../assets/banner.jpg);
+  background-image: url(https://webobject.oss-ap-southeast-1.aliyuncs.com/website/images/background/easygo_bg.png);
   background-size: 100% 100%;
   background-repeat: no-repeat;
   position: relative;
@@ -11,12 +11,46 @@
     height: 450px;
     padding: 15px;
     box-sizing: border-box;
-    background-color: #fff;
+    // background-color: rgba(255, 255, 255, 0.5);
     position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
+    left: 50%;
+    top: 60%;
+    transform: translate(-50%, -50%);
     border-radius: 10px;
-    box-shadow: 0 0 15px rgb(99, 98, 98);
+    // box-shadow: 0 0 15px rgb(99, 98, 98);
   }
+
+  &-btn {
+    width: 100%;
+    transform: translateY(-15px);
+  }
+
+  &-ipt {
+    width: 100%;
+  }
+  &-ipt-captcha {
+    width: 75%;
+  }
+  &-captcha {
+    position: relative;
+  }
+  &-captcha-img {
+    float: right;
+    width: 80px;
+    height: 32px;
+    vertical-align: top;
+    cursor: pointer;
+    text-align: center;
+    transform: translateY(-56px);
+  }
+  &-tip {
+    text-align: right;
+    font-size: 12px;
+    transform: translate(80px, -10px);
+  }
+}
+
+.formitem {
+  margin: 0;
+  height: 56px;
 }
