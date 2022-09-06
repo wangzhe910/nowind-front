@@ -1,4 +1,10 @@
-import { fetchList } from '../services/index';
+import {
+  fetchList,
+  addMerchant,
+  updateMerchant,
+  delMerchant,
+} from '../services/index';
+
 export default {
   namespace: 'merchantManagement',
   state: {
@@ -6,20 +12,33 @@ export default {
   },
   effects: {
     *getList({ payload, callback }, { call, put }) {
-      console.log('有咩有');
       const result = yield call(fetchList, payload);
-      // console.log("resu: ",result)
-      // const company = result.data[0];
-      // const data = {
-      //   topList: result.data,
-      //   topListCompany: result.data[0],
-      // };
-      // yield put({
-      //   type: '_getTopList',
-      //   payload: data,
-      // });
-      // return data;
+      if (result.code === 200) {
+        yield put({
+          type: '_getList',
+          payload: result.data,
+        });
+      }
+    },
+    *add({ payload, callback }, { call, put }) {
+      const result = yield call(addMerchant, payload);
+      return result;
+    },
+    *update({ payload, callback }, { call, put }) {
+      const result = yield call(updateMerchant, payload);
+      return result;
+    },
+    *deleted({ payload, callback }, { call, put }) {
+      const result = yield call(delMerchant, payload);
+      return result;
     },
   },
-  reducers: {},
+  reducers: {
+    _getList(state, { payload }) {
+      return {
+        ...state,
+        list: payload,
+      };
+    },
+  },
 };

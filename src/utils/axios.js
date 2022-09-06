@@ -41,7 +41,6 @@ axios.interceptors.request.use(
 // axios response拦截器
 axios.interceptors.response.use(
   (response) => {
-    console.log('response: ', response);
     // 如果返回的状态码为200，说明接口请求成功，可以正常拿到数据
     // 否则的话抛出错误 结合自身业务和后台返回的接口状态约定写response拦截器
     if (response.status === 200 && response.data.code === 200) {
@@ -58,11 +57,16 @@ axios.interceptors.response.use(
         setTimeout(() => {
           window.location.href = '/login';
         }, 300);
+      } else {
+        notification.error({
+          message: msg,
+        });
       }
       return Promise.reject(response);
     }
   },
   (error) => {
+    console.log('axios error: ', error);
     const responseCode = error.response.status;
     switch (responseCode) {
       // 400：code和state过期

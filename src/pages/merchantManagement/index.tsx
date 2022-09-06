@@ -1,16 +1,21 @@
 import { connect } from 'dva';
-import { useEffect } from 'react';
-import { Button, Modal } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Button, Modal, Tag, Form, Input, message, Popconfirm } from 'antd';
 import { PlusOutlined, SearchOutlined } from '@ant-design/icons';
 import DataTable from '@/components/table/index';
 
 const namespace = 'merchantManagement';
+const FormItem = Form.Item;
 
 const MerchantManagement = (props: any) => {
   const {
     dispatch,
     merchantManagement: { list },
+    loadingList,
   } = props;
+  const [show, setShow] = useState(false);
+  const [modalValue, setModalValue] = useState({});
+  const [form] = Form.useForm();
 
   const columns = [
     {
@@ -34,7 +39,11 @@ const MerchantManagement = (props: any) => {
       dataIndex: 'status',
       key: 'status',
       render: (text: Boolean, record: Object) => {
-        return text ? '启用' : '禁用';
+        return text ? (
+          <Tag color="#87d068">启用</Tag>
+        ) : (
+          <Tag color="#f50">禁用</Tag>
+        );
       },
     },
     {
@@ -50,73 +59,35 @@ const MerchantManagement = (props: any) => {
       render: (_: String, record: Object) => {
         return (
           <>
-            <span className="global_span">编辑</span>
-            <span className="global_span">删除</span>
+            <span
+              className="global_span"
+              onClick={() => {
+                console.log('recc: ', record);
+                setModalValue(record);
+                setShow(true);
+              }}
+            >
+              编辑
+            </span>
+            <Popconfirm
+              title="确定删除该商户吗？"
+              onConfirm={() => handleDelete(record.merchantNo)}
+            >
+              <span className="global_span">删除</span>
+            </Popconfirm>
           </>
         );
       },
     },
   ];
 
-  const tableData: any = [
-    {
-      createUser: null,
-      createTime: '2022-08-26 13:34:04',
-      updateUser: null,
-      updateTime: '2022-08-26 13:34:04',
-      version: 0,
-      merchantNo: 'M1661492044',
-      merchantName: 'Upeo',
-      contactName: '王哲',
-      contactPhone: '13190876543',
-      contactEmail: 'nio@scoreonetech.com',
-      status: true,
-    },
-    {
-      createUser: null,
-      createTime: '2022-08-27 10:21:29',
-      updateUser: null,
-      updateTime: '2022-08-27 10:21:29',
-      version: 0,
-      merchantNo: 'M1661566888',
-      merchantName: 'Domino',
-      contactName: 'Domino',
-      contactPhone: '13112345678',
-      contactEmail: 'domino@163.com',
-      status: true,
-    },
-    {
-      createUser: null,
-      createTime: '2022-08-28 09:36:18',
-      updateUser: null,
-      updateTime: '2022-08-28 09:36:18',
-      version: 0,
-      merchantNo: 'M1661650577',
-      merchantName: 'Hank',
-      contactName: '黄乐乐',
-      contactPhone: '13012345678',
-      contactEmail: 'hank@scoreonetech.com',
-      status: true,
-    },
+  const formConfig = [
+    { label: '商户号', name: 'merchantNo', required: true },
+    { label: '商户名称', name: 'merchantName', required: true },
+    { label: '商户联系人', name: 'contactName', required: true },
+    { label: '联系方式', name: 'contactPhone', required: true },
+    { label: '邮箱', name: 'contactEmail', required: true },
   ];
-  tableData.push(tableData[0]);
-  tableData.push(tableData[0]);
-  tableData.push(tableData[0]);
-  tableData.push(tableData[0]);
-  tableData.push(tableData[0]);
-  tableData.push(tableData[0]);
-  tableData.push(tableData[0]);
-  tableData.push(tableData[0]);
-  tableData.push(tableData[0]);
-  tableData.push(tableData[0]);
-  tableData.push(tableData[0]);
-  tableData.push(tableData[0]);
-  tableData.push(tableData[0]);
-  tableData.push(tableData[0]);
-  tableData.push(tableData[0]);
-  tableData.push(tableData[0]);
-  tableData.push(tableData[0]);
-  tableData.push(tableData[0]);
 
   const getList = (params = {}) => {
     dispatch({
@@ -125,9 +96,46 @@ const MerchantManagement = (props: any) => {
     });
   };
 
+  const handleSave = async () => {
+    const values = await form.validateFields();
+    const res = await dispatch({
+      type: `${namespace}/${Object.keys(modalValue).length ? 'update' : 'add'}`,
+      payload: values,
+    });
+    if (res.code === 200) {
+      message.success('success');
+      getList();
+      setShow(false);
+    } else {
+      message.error(res.msg);
+    }
+  };
+
+  const handleDelete = async (merchantNo: any) => {
+    const res = await dispatch({
+      type: `${namespace}/deleted`,
+      payload: merchantNo,
+    });
+    if (res.code === 200) {
+      message.success('success');
+      getList();
+    } else {
+      message.error(res.msg);
+    }
+  };
+
   useEffect(() => {
     getList();
   }, []);
+
+  useEffect(() => {
+    if (!Object.keys(modalValue).length) {
+      form.resetFields();
+    } else {
+      form.setFieldsValue(modalValue);
+    }
+  }, [modalValue]);
+
   return (
     <div>
       <div style={{ padding: '10px 20px 20px' }}>
@@ -135,20 +143,84 @@ const MerchantManagement = (props: any) => {
           type="primary"
           icon={<PlusOutlined />}
           style={{ marginRight: 10 }}
+          onClick={() => setShow(true)}
         >
           新增
         </Button>
-        <Button type="primary" icon={<SearchOutlined />}>
+        <Button
+          type="primary"
+          icon={<SearchOutlined />}
+          onClick={() => getList()}
+        >
           查询
         </Button>
       </div>
       <DataTable
         columns={columns}
-        tableData={tableData}
+        tableData={list}
         fetchTable={(page, size) => {
           console.log('page: ', page, 'size: ', size);
         }}
+        loading={loadingList}
       />
+      <Modal
+        title="新增商户"
+        visible={show}
+        onCancel={() => {
+          setModalValue({});
+          setShow(false);
+        }}
+        onOk={handleSave}
+        destroyOnClose
+        centered
+      >
+        <Form
+          form={form}
+          labelCol={{
+            span: 6,
+          }}
+          wrapperCol={{
+            span: 24,
+          }}
+          autoComplete="off"
+        >
+          {formConfig.map((item) => (
+            <React.Fragment key={item.name}>
+              <FormItem
+                label={item.label}
+                name={item.name}
+                rules={
+                  item.required
+                    ? [
+                        {
+                          required: true,
+                          message: `请输入${item.label}!`,
+                        },
+                      ]
+                    : []
+                }
+              >
+                <Input />
+              </FormItem>
+            </React.Fragment>
+          ))}
+          {/* <FormItem label="商户号" name="merchantNo">
+            <Input />
+          </FormItem>
+          <FormItem label="商户名称" name="merchantName">
+            <Input />
+          </FormItem>
+          <FormItem label="商户联系人" name="contactName">
+            <Input />
+          </FormItem>
+          <FormItem label="联系方式" name="contactPhone">
+            <Input />
+          </FormItem>
+          <FormItem label="邮箱" name="contactEmail">
+            <Input />
+          </FormItem> */}
+        </Form>
+      </Modal>
     </div>
   );
 };
@@ -156,4 +228,5 @@ const MerchantManagement = (props: any) => {
 export default connect(({ merchantManagement, loading }: any) => ({
   merchantManagement,
   loadingGlobal: loading.global,
+  loadingList: loading.effects[`${namespace}/getList`],
 }))(MerchantManagement);

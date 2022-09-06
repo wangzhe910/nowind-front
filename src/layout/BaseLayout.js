@@ -47,7 +47,7 @@ const BaseLayout = (props) => {
   };
 
   useEffect(() => {
-    console.log('eee: ', props);
+    // console.log('eee: ', props);
     // 没登录强定向到登录页
     if (!localStorage.getItem(TOKEN)) {
       history.push('/login');

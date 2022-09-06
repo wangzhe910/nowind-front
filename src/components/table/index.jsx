@@ -10,6 +10,7 @@ import styles from './index.less';
  * --- 选传 ---
  * @param {fetchTable} 分页变化的时候，请求数据的处理函数
  * @param {showPagination} 是否显示分页器，默认为 true
+ * @param {loading} 请求的loading
  * @param {size} 表格尺寸，默认为 middle
  */
 
@@ -20,6 +21,7 @@ const DataTable = (props) => {
     size = 'middle',
     fetchTable,
     showPagination = true,
+    loading = false,
   } = props;
   const [pageSize, setPageSize] = useState(10);
 
@@ -47,6 +49,7 @@ const DataTable = (props) => {
       scroll={{
         y: 240,
       }}
+      loading={loading}
     />
   );
 };
