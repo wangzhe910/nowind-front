@@ -8,6 +8,10 @@ export default [
     component: '@/layout/BaseLayout',
     routes: [
       {
+        path: '/user',
+        component: '@/pages/user/index',
+      },
+      {
         path: '/mch',
         component: '@/pages/merchantManagement/index',
       },

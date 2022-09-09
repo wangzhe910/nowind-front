@@ -204,21 +204,6 @@ const MerchantManagement = (props: any) => {
               </FormItem>
             </React.Fragment>
           ))}
-          {/* <FormItem label="商户号" name="merchantNo">
-            <Input />
-          </FormItem>
-          <FormItem label="商户名称" name="merchantName">
-            <Input />
-          </FormItem>
-          <FormItem label="商户联系人" name="contactName">
-            <Input />
-          </FormItem>
-          <FormItem label="联系方式" name="contactPhone">
-            <Input />
-          </FormItem>
-          <FormItem label="邮箱" name="contactEmail">
-            <Input />
-          </FormItem> */}
         </Form>
       </Modal>
     </div>
