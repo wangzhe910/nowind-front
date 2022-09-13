@@ -23,12 +23,14 @@ export const MenuItems = [
     key: 'app',
     icon: <AppstoreAddOutlined />,
     label: '应用管理',
-    children: [{ key: '/app', label: '应用查询', path: '' }],
+    children: [{ key: '/app', label: '应用查询', path: '/app' }],
   },
   {
     key: 'appConfig',
     icon: <PartitionOutlined />,
     label: '应用权限配置',
-    children: [{ key: '/appConfig', label: '应用权限列表', path: '' }],
+    children: [
+      { key: '/appConfig', label: '应用权限列表', path: '/appConfig' },
+    ],
   },
 ];

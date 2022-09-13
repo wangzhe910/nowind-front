@@ -8,6 +8,10 @@ export default [
     component: '@/layout/BaseLayout',
     routes: [
       {
+        path: '/appConfig',
+        component: '@/pages/appConfig/index',
+      },
+      {
         path: '/user',
         component: '@/pages/user/index',
       },
