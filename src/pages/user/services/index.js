@@ -13,7 +13,9 @@ export const editUser = (params) => put('/user', params);
 export const delUser = (params) => axiosDelete(`/user/${params}`);
 
 // 修改用户密码
-export const editUserPassword = (params) => put('/user/password', params);
+export const editUserPassword = (params) =>
+  put(`/user/password?password=${params.password}&userId=${params.userId}`);
 
 // 更新状态
-export const editUserState = (params) => put('/user/state', params);
+export const editUserState = (params) =>
+  put(`/user/state?state=${params.state}&userId=${params.userId}`);

@@ -109,7 +109,7 @@ const Login = (props: any) => {
               prefix={<LockOutlined />}
               placeholder="Please enter your password"
               autoComplete="off"
-              minLength={8}
+              // minLength={8}
             />
           </FormItem>
           <FormItem
