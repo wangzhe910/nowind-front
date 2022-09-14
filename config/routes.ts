@@ -12,6 +12,10 @@ export default [
         component: '@/pages/appConfig/index',
       },
       {
+        path: '/app',
+        component: '@/pages/app/index',
+      },
+      {
         path: '/user',
         component: '@/pages/user/index',
       },
