@@ -34,7 +34,7 @@ const AppConfig = (props) => {
   console.log('props: ', props);
   const columns = [
     {
-      title: 'apiUrl',
+      title: '接口地址',
       dataIndex: 'apiUrl',
     },
     {
@@ -187,7 +187,7 @@ const AppConfig = (props) => {
               style={{ width: 200, margin: '0 20px 10px' }}
               value={merchant}
               onChange={(e) => setMerchant(e.target.value)}
-              disabled
+              // disabled
             />
           </Col>
           <Col span={1}>

@@ -85,7 +85,7 @@ const MerchantManagement = (props: any) => {
     // { label: '商户号', name: 'merchantNo', required: true },
     { label: '商户名称', name: 'merchantName', required: true },
     { label: '商户联系人', name: 'contactName', required: true },
-    { label: '联系方式', name: 'contactPhone', required: true },
+    { label: '手机号', name: 'contactPhone', required: true },
     { label: '邮箱', name: 'contactEmail', required: true },
   ];
 

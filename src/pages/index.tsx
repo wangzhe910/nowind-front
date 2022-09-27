@@ -4,9 +4,9 @@ export default function IndexPage() {
   const lang = useIntl();
   return (
     <div>
-      <h1 className={styles.title}>
+      {/* <h1 className={styles.title}>
         Page index {lang.formatMessage({ id: 'pageIndex.title' })}
-      </h1>
+      </h1> */}
     </div>
   );
 }
