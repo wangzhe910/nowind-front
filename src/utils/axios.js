@@ -1,6 +1,6 @@
 import Axios from 'axios';
-import { notification } from 'antd';
-import { TOKEN, USER } from './constant';
+import {notification} from 'antd';
+import {TOKEN, USER} from './constant';
 
 const PLATFORM = process.env; //process.env.PLATFORM
 console.log('PLATFORM: ', process.env);
@@ -9,7 +9,7 @@ Axios.defaults.timeout = 15000;
 Axios.defaults.baseURL =
   PLATFORM.NODE_ENV === 'development'
     ? 'http://120.77.252.213:8011/nowind-auth/'
-    : 'https://risk.sigmaai.net/gateway/';
+    : 'https://risk.sigmaai.net/gateway/nowind-auth/';
 
 // post请求头的设置
 Axios.defaults.headers.post['Content-Type'] =
