@@ -98,9 +98,12 @@ const MerchantManagement = (props: any) => {
 
   const handleSave = async () => {
     const values = await form.validateFields();
+    const params = values;
+    if (Object.keys(modalValue).length)
+      params.merchantNo = modalValue.merchantNo;
     const res = await dispatch({
       type: `${namespace}/${Object.keys(modalValue).length ? 'update' : 'add'}`,
-      payload: values,
+      payload: params,
     });
     if (res.code === 200) {
       message.success('success');
