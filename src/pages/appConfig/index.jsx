@@ -12,6 +12,8 @@ import {
   Radio,
   Switch,
   Select,
+  Row,
+  Col,
 } from 'antd';
 import { PlusOutlined, SearchOutlined } from '@ant-design/icons';
 import DataTable from '@/components/table/index';
@@ -36,7 +38,7 @@ const AppConfig = (props) => {
       dataIndex: 'apiUrl',
     },
     {
-      title: '调用次数',
+      title: '调用余量',
       dataIndex: 'balance',
       width: 80,
     },
@@ -177,25 +179,28 @@ const AppConfig = (props) => {
   return (
     <div>
       <div style={{ padding: '10px 20px 20px' }}>
-        <Input
-          placeholder="apiUrl"
-          value={apiurl}
-          allowClear
-          style={{ width: 200 }}
-          onChange={(e) => setApiurl(e.target.value)}
-          disabled
-        />
-        <Input
-          placeholder="商户号"
-          allowClear
-          style={{ width: 200, margin: '0 20px 10px' }}
-          value={merchant}
-          onChange={(e) => setMerchant(e.target.value)}
-          disabled
-        />
-        <Button type="primary" icon={<SearchOutlined />} onClick={handleSearch}>
-          查询
-        </Button>
+        <Row>
+          <Col span={6}>
+            <Input
+              placeholder="商户号"
+              allowClear
+              style={{ width: 200, margin: '0 20px 10px' }}
+              value={merchant}
+              onChange={(e) => setMerchant(e.target.value)}
+              disabled
+            />
+          </Col>
+          <Col span={1}>
+            <Button
+              type="primary"
+              icon={<SearchOutlined />}
+              onClick={handleSearch}
+            >
+              查询
+            </Button>
+          </Col>
+        </Row>
+
         <Button
           type="primary"
           icon={<PlusOutlined />}

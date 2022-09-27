@@ -46,9 +46,9 @@ const DataTable = (props) => {
       dataSource={tableData}
       pagination={pageConfig}
       size={size}
-      scroll={{
-        y: 240,
-      }}
+      // scroll={{
+      //   y: 240,
+      // }}
       loading={loading}
     />
   );

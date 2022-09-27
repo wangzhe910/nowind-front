@@ -9,7 +9,7 @@ Axios.defaults.timeout = 15000;
 Axios.defaults.baseURL =
   PLATFORM.NODE_ENV === 'development'
     ? 'http://120.77.252.213:8011/nowind-auth/'
-    : '';
+    : 'https://risk.sigmaai.net/gateway/';
 
 // post请求头的设置
 Axios.defaults.headers.post['Content-Type'] =
