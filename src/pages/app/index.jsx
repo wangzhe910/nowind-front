@@ -56,9 +56,6 @@ const PageApp = (props) => {
     {
       title: '应用ID',
       dataIndex: 'appId',
-      render: (text) => {
-        return <div style={{ width: 70, overflowX: 'auto' }}>{text}</div>;
-      },
     },
     {
       title: '应用名称',
@@ -293,7 +290,7 @@ const PageApp = (props) => {
             name="callBackUrl"
             rules={[{ required: true }]}
           >
-            <Input />
+            <Input.TextArea />
           </FormItem>
           <FormItem label="是否启用" name="status" rules={[{ required: true }]}>
             <Radio.Group>

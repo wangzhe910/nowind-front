@@ -23,7 +23,7 @@ export const MenuItems = [
     key: 'app',
     icon: <AppstoreAddOutlined />,
     label: '应用管理',
-    children: [{ key: '/app', label: '应用查询', path: '/app' }],
+    children: [{ key: '/app', label: '应用列表', path: '/app' }],
   },
   {
     key: 'appConfig',
