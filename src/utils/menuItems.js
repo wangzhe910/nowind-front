@@ -17,7 +17,10 @@ export const MenuItems = [
     key: 'mch',
     icon: <ShopOutlined />,
     label: '商户管理',
-    children: [{ key: '/mch', label: '商户列表', path: '/mch' }],
+    children: [
+      { key: '/mch', label: '商户列表', path: '/mch' },
+      { key: '/mchConfig', label: '商户权限配置', path: '/mchConfig' },
+    ],
   },
   {
     key: 'app',
@@ -25,12 +28,12 @@ export const MenuItems = [
     label: '应用管理',
     children: [{ key: '/app', label: '应用列表', path: '/app' }],
   },
-  {
-    key: 'appConfig',
-    icon: <PartitionOutlined />,
-    label: '应用权限配置',
-    children: [
-      { key: '/appConfig', label: '应用权限列表', path: '/appConfig' },
-    ],
-  },
+  // {
+  //   key: 'appConfig',
+  //   icon: <PartitionOutlined />,
+  //   label: '应用权限配置',
+  //   children: [
+  //     { key: '/appConfig', label: '应用权限列表', path: '/appConfig' },
+  //   ],
+  // },
 ];

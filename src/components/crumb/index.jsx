@@ -4,7 +4,8 @@ import { Breadcrumb } from 'antd';
 const Crumb = (props) => {
   const { pathname } = props;
 
-  const arr = MenuItems.filter((item) => item.key === pathname.substring(1));
+  // const arr = MenuItems.filter((item) => item.key === pathname.substring(1));
+  const arr = MenuItems.filter((item) => pathname.includes(item.key));
   const subTitle = arr.length ? arr[0].label : undefined;
   let lastTitle = undefined;
   if (subTitle) {

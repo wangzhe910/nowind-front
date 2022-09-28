@@ -51,8 +51,12 @@ const AppConfig = (props) => {
       },
     },
     {
-      title: '商户号',
+      title: '商户',
       dataIndex: 'merchantNo',
+      render: (text) => {
+        const arr = merchantOptions.filter((item) => item.merchantNo === text);
+        return arr[0]?.merchantName;
+      },
     },
     {
       title: '创建时间',
@@ -181,14 +185,25 @@ const AppConfig = (props) => {
       <div style={{ padding: '10px 20px 20px' }}>
         <Row>
           <Col span={6}>
-            <Input
+            <Select
+              onChange={(e) => setMerchant(e)}
+              placeholder="商户"
+              style={{ width: 200, margin: '0 20px 10px' }}
+            >
+              {merchantOptions.map((item) => (
+                <Select.Option value={item.merchantNo}>
+                  {item.merchantName}
+                </Select.Option>
+              ))}
+            </Select>
+            {/* <Input
               placeholder="商户号"
               allowClear
               style={{ width: 200, margin: '0 20px 10px' }}
               value={merchant}
               onChange={(e) => setMerchant(e.target.value)}
               // disabled
-            />
+            /> */}
           </Col>
           <Col span={1}>
             <Button

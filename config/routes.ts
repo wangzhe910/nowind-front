@@ -8,7 +8,7 @@ export default [
     component: '@/layout/BaseLayout',
     routes: [
       {
-        path: '/appConfig',
+        path: '/mchConfig',
         component: '@/pages/appConfig/index',
       },
       {
