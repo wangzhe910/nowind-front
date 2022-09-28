@@ -41,20 +41,12 @@ const PageApp = (props) => {
   } = props;
   const [current, setCurrent] = useState(1);
   const [pageSize, setPageSize] = useState(10);
-  const [type, setType] = useState('1');
+  // const [type, setType] = useState('1');
   const [show, setShow] = useState(false);
   const [modalValue, setModalValue] = useState({});
-  const [urlStr, setUrlStr] = useState('http://');
   const [form] = Form.useForm();
   const [formModal] = Form.useForm();
   const merchantOptions = props.merchantManagement.list || [];
-
-  const selectBefore = (
-    <Select value={urlStr} onChange={(v) => setUrlStr(v)}>
-      <Option value="http://">http://</Option>
-      <Option value="https://">https://</Option>
-    </Select>
-  );
 
   const columns = [
     // {
@@ -64,15 +56,18 @@ const PageApp = (props) => {
     {
       title: '应用ID',
       dataIndex: 'appId',
+      render: (text) => {
+        return <div style={{ width: 70, overflowX: 'auto' }}>{text}</div>;
+      },
     },
     {
       title: '应用名称',
       dataIndex: 'appName',
     },
-    {
-      title: 'appSecret',
-      dataIndex: 'appSecret',
-    },
+    // {
+    //   title: 'appSecret',
+    //   dataIndex: 'appSecret',
+    // },
     {
       title: '商户',
       dataIndex: 'merchantNo',
@@ -84,9 +79,9 @@ const PageApp = (props) => {
     {
       title: '回调地址',
       dataIndex: 'callBackUrl',
-      width: 120,
+      // width: 120,
       render: (text) => {
-        return <div style={{ width: 120, overflowX: 'auto' }}>{text}</div>;
+        return <div style={{ width: 170, overflowX: 'auto' }}>{text}</div>;
       },
     },
     {
@@ -152,28 +147,16 @@ const PageApp = (props) => {
     }
   };
 
-  const getList = async (args = type, page = current, size = pageSize) => {
-    const url =
-      args === '1'
-        ? 'getListByPage'
-        : args === '2'
-        ? 'getListByAppid'
-        : 'getListById';
+  const getList = async (page = current, size = pageSize) => {
     const values = await form.validateFields();
     let params = {};
-    if (args === '1') {
-      if (values.merchantNo) {
-        params.merchantNo = values.merchantNo;
-      }
-      params.current = page;
-      params.size = size;
-    } else if (args === '2') {
-      params = values.appId;
-    } else if (args === '3') {
-      params = values.id;
+    if (values.merchantNo) {
+      params.merchantNo = values.merchantNo;
     }
+    params.current = page;
+    params.size = size;
     dispatch({
-      type: `${namespace}/${url}`,
+      type: `${namespace}/getListByPage`,
       payload: params,
     });
   };
@@ -193,7 +176,6 @@ const PageApp = (props) => {
     const data = await formModal.validateFields();
     const params = {
       ...data,
-      callBackUrl: urlStr + data.callBackUrl,
     };
     if (modalValue.id) params.id = modalValue.id;
     if (modalValue.appId) params.appId = modalValue.appId;
@@ -227,49 +209,24 @@ const PageApp = (props) => {
       <div style={{ padding: '10px 20px 20px' }}>
         <Form labelCol={{ span: 8 }} form={form}>
           <Row>
-            <Col span={8}>
-              <FormItem label="查询方式">
-                <Radio.Group
-                  options={options}
-                  onChange={(e) => {
-                    setType(e.target.value);
-                    form.resetFields();
-                  }}
-                  value={type}
-                  optionType="button"
-                  buttonStyle="solid"
-                />
+            <Col span={6}>
+              <FormItem label="商户" name="merchantNo">
+                <Select>
+                  {merchantOptions.map((item) => (
+                    <Select.Option value={item.merchantNo}>
+                      {item.merchantName}
+                    </Select.Option>
+                  ))}
+                </Select>
               </FormItem>
             </Col>
-            <Col span={8}>
-              <FormItem
-                label={type === '1' ? '商户' : type === '2' ? 'appId' : 'id'}
-                name={
-                  type === '1' ? 'merchantNo' : type === '2' ? 'appId' : 'id'
-                }
-                rules={type === '1' ? [] : [{ required: true }]}
-              >
-                {type === '1' ? (
-                  <Select>
-                    {merchantOptions.map((item) => (
-                      <Select.Option value={item.merchantNo}>
-                        {item.merchantName}
-                      </Select.Option>
-                    ))}
-                  </Select>
-                ) : (
-                  <Input allowClear />
-                )}
-              </FormItem>
-            </Col>
-            <Col span={4} offset={4}>
+            <Col span={4} offset={2}>
               <Button type="primary" onClick={handleSearch}>
                 查询
               </Button>
               <Button
                 style={{ marginLeft: 10 }}
                 onClick={() => {
-                  setType('1');
                   form.resetFields();
                   getList('1');
                 }}
@@ -289,9 +246,8 @@ const PageApp = (props) => {
             console.log('page: ', page, 'size: ', size);
             setCurrent(page);
             setPageSize(pageSize);
-            getList('1', page, size);
+            getList(page, size);
           }}
-          showPagination={type === '1'}
           loading={loading}
         />
       </div>
@@ -337,7 +293,7 @@ const PageApp = (props) => {
             name="callBackUrl"
             rules={[{ required: true }]}
           >
-            <Input addonBefore={selectBefore} />
+            <Input />
           </FormItem>
           <FormItem label="是否启用" name="status" rules={[{ required: true }]}>
             <Radio.Group>
@@ -360,6 +316,6 @@ const PageApp = (props) => {
 
 export default connect(({ pageapp, loading, merchantManagement }) => ({
   pageapp,
-  loading: loading.effects[`${namespace}/getList`],
+  loading: loading.effects[`${namespace}/getListByPage`],
   merchantManagement,
 }))(PageApp);
