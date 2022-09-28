@@ -91,7 +91,7 @@ const Login = (props: any) => {
               className={styles['login-ipt']}
               prefix={<UserOutlined />}
               placeholder="Please enter your username"
-              style={{ height: 40 }}
+              style={{ height: 50 }}
             />
           </FormItem>
           <FormItem
@@ -110,7 +110,7 @@ const Login = (props: any) => {
               prefix={<LockOutlined />}
               placeholder="Please enter your password"
               autoComplete="off"
-              style={{ height: 40 }}
+              style={{ height: 50 }}
               // minLength={8}
             />
           </FormItem>
@@ -129,7 +129,7 @@ const Login = (props: any) => {
               className={styles['login-ipt-captcha']}
               prefix={<ScheduleOutlined />}
               placeholder="Please enter the Captcha"
-              style={{ height: 40 }}
+              style={{ height: 50 }}
             />
           </FormItem>
           <div className={styles['login-captcha']}>

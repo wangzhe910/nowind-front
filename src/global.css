@@ -1,5 +1,16 @@
-.global_span{
+.global_span {
   color: rgb(24, 144, 255);
   cursor: pointer;
   margin: 0 10px;
+}
+
+/* 
+  ant-design中Input输入框在获取焦点时由于保留了上次输入内容而莫名出现了一个黑色背景的选择提示框，
+  且选择提示框中的值后还会出现蓝色背景
+  现在无需蓝色背景，作如下处理
+*/
+input:-internal-autofill-previewed,
+input:-internal-autofill-selected {
+  /* // -webkit-text-fill-color: #2a2d33; */
+  transition: background-color 5000s ease-out 0.5s;
 }
