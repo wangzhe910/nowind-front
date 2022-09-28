@@ -39,6 +39,8 @@ const PageApp = (props) => {
     loading,
     [namespace]: { list },
   } = props;
+  const [current, setCurrent] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
   const [type, setType] = useState('1');
   const [show, setShow] = useState(false);
   const [modalValue, setModalValue] = useState({});
@@ -150,7 +152,7 @@ const PageApp = (props) => {
     }
   };
 
-  const getList = async (args = type) => {
+  const getList = async (args = type, page = current, size = pageSize) => {
     const url =
       args === '1'
         ? 'getListByPage'
@@ -159,8 +161,12 @@ const PageApp = (props) => {
         : 'getListById';
     const values = await form.validateFields();
     let params = {};
-    if (args === '1' && values.merchantNo) {
-      params.merchantNo = values.merchantNo;
+    if (args === '1') {
+      if (values.merchantNo) {
+        params.merchantNo = values.merchantNo;
+      }
+      params.current = page;
+      params.size = size;
     } else if (args === '2') {
       params = values.appId;
     } else if (args === '3') {
@@ -281,6 +287,9 @@ const PageApp = (props) => {
           tableData={list}
           fetchTable={(page, size) => {
             console.log('page: ', page, 'size: ', size);
+            setCurrent(page);
+            setPageSize(pageSize);
+            getList('1', page, size);
           }}
           showPagination={type === '1'}
           loading={loading}
