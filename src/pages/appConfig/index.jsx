@@ -34,8 +34,12 @@ const AppConfig = (props) => {
   console.log('props: ', props);
   const columns = [
     {
-      title: '接口地址',
-      dataIndex: 'apiUrl',
+      title: '商户',
+      dataIndex: 'merchantNo',
+      render: (text) => {
+        const arr = merchantOptions.filter((item) => item.merchantNo === text);
+        return arr[0]?.merchantName;
+      },
     },
     {
       title: '调用余量',
@@ -43,19 +47,15 @@ const AppConfig = (props) => {
       width: 80,
     },
     {
+      title: '接口地址',
+      dataIndex: 'apiUrl',
+    },
+    {
       title: '是否收费',
       dataIndex: 'chargingRequired',
       width: 80,
       render: (text) => {
         return text ? '是' : '否';
-      },
-    },
-    {
-      title: '商户',
-      dataIndex: 'merchantNo',
-      render: (text) => {
-        const arr = merchantOptions.filter((item) => item.merchantNo === text);
-        return arr[0]?.merchantName;
       },
     },
     {
@@ -183,47 +183,43 @@ const AppConfig = (props) => {
   return (
     <div>
       <div style={{ padding: '10px 20px 20px' }}>
-        <Row>
-          <Col span={6}>
-            <Select
-              onChange={(e) => setMerchant(e)}
-              placeholder="商户"
-              style={{ width: 200, margin: '0 20px 10px' }}
-            >
-              {merchantOptions.map((item) => (
-                <Select.Option value={item.merchantNo}>
-                  {item.merchantName}
-                </Select.Option>
-              ))}
-            </Select>
-            {/* <Input
-              placeholder="商户号"
-              allowClear
-              style={{ width: 200, margin: '0 20px 10px' }}
-              value={merchant}
-              onChange={(e) => setMerchant(e.target.value)}
-              // disabled
-            /> */}
-          </Col>
-          <Col span={1}>
-            <Button
-              type="primary"
-              icon={<SearchOutlined />}
-              onClick={handleSearch}
-            >
-              查询
-            </Button>
-          </Col>
-        </Row>
-
-        <Button
-          type="primary"
-          icon={<PlusOutlined />}
-          style={{ marginLeft: 10 }}
-          onClick={() => setShow(true)}
+        <span>商户:</span>
+        <Select
+          onChange={(e) => setMerchant(e)}
+          placeholder="请选择"
+          style={{ width: 200, margin: '0 20px 10px' }}
+          value={merchant}
         >
-          新增
+          {merchantOptions.map((item) => (
+            <Select.Option value={item.merchantNo}>
+              {item.merchantName}
+            </Select.Option>
+          ))}
+        </Select>
+        <Button type="primary" icon={<SearchOutlined />} onClick={handleSearch}>
+          查询
         </Button>
+        <Button
+          style={{ marginLeft: 10 }}
+          onClick={() => {
+            setMerchant(undefined);
+            setTimeout(() => {
+              handleSearch();
+            }, 300);
+          }}
+        >
+          重置
+        </Button>
+        <div>
+          <Button
+            type="primary"
+            icon={<PlusOutlined />}
+            // style={{ marginLeft: 10 }}
+            onClick={() => setShow(true)}
+          >
+            新增
+          </Button>
+        </div>
       </div>
       <DataTable
         columns={columns}
