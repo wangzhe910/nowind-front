@@ -297,7 +297,7 @@ const AppConfig = (props) => {
               },
             ]}
           >
-            <Input type="number" min={1000} max={1000000} />
+            <Input type="number" max={1000000} />
           </FormItem>
         </Form>
       </Modal>
