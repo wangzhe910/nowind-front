@@ -31,7 +31,8 @@ const AppConfig = (props) => {
   const [apiurl, setApiurl] = useState();
   const [merchant, setMerchant] = useState();
   const [form] = Form.useForm();
-  console.log('props: ', props);
+  const [formQuery] = Form.useForm();
+
   const columns = [
     {
       title: '商户',
@@ -70,8 +71,6 @@ const AppConfig = (props) => {
     },
     {
       title: '操作',
-      dataIndex: '',
-      // width: 200,
       render: (_, record) => {
         return (
           <div>
@@ -123,14 +122,14 @@ const AppConfig = (props) => {
     }
   };
 
-  const handleSearch = () => {
-    const params = {
-      apiUrl: apiurl,
-      merchantNo: merchant,
-    };
-    !params.apiUrl && delete params.apiUrl;
-    !params.merchantNo && delete params.merchantNo;
+  const handleSearch = async () => {
+    const params = await formQuery.validateFields();
     getList(params);
+  };
+
+  const handleReset = () => {
+    formQuery.resetFields();
+    getList();
   };
 
   const handleSave = async () => {
@@ -153,7 +152,8 @@ const AppConfig = (props) => {
       });
       if (increaseRes.code === 200) {
         message.success('success');
-        getList();
+        // getList();
+        handleSearch();
         setShow(false);
       } else {
         message.error(res.msg);
@@ -182,34 +182,37 @@ const AppConfig = (props) => {
 
   return (
     <div>
-      <div style={{ padding: '10px 20px 20px' }}>
-        <span>商户:</span>
-        <Select
-          onChange={(e) => setMerchant(e)}
-          placeholder="请选择"
-          style={{ width: 200, margin: '0 20px 10px' }}
-          value={merchant}
-        >
-          {merchantOptions.map((item) => (
-            <Select.Option value={item.merchantNo}>
-              {item.merchantName}
-            </Select.Option>
-          ))}
-        </Select>
-        <Button type="primary" icon={<SearchOutlined />} onClick={handleSearch}>
-          查询
-        </Button>
-        <Button
-          style={{ marginLeft: 10 }}
-          onClick={() => {
-            setMerchant(undefined);
-            setTimeout(() => {
-              handleSearch();
-            }, 300);
-          }}
-        >
-          重置
-        </Button>
+      <div>
+        <Form form={formQuery} labelCol={{ span: 6 }}>
+          <Row>
+            <Col span={8}>
+              <FormItem label="商户" name="merchantNo">
+                <Select placeholder="请选择" style={{ width: 200 }}>
+                  {merchantOptions.map((item) => (
+                    <Select.Option value={item.merchantNo}>
+                      {item.merchantName}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </FormItem>
+            </Col>
+            <Col span={16}>
+              <Button
+                type="primary"
+                icon={<SearchOutlined />}
+                onClick={handleSearch}
+              >
+                查询
+              </Button>
+              <Button
+                style={{ marginLeft: 10, marginBottom: 10 }}
+                onClick={handleReset}
+              >
+                重置
+              </Button>
+            </Col>
+          </Row>
+        </Form>
         <div>
           <Button
             type="primary"
@@ -239,6 +242,9 @@ const AppConfig = (props) => {
         onOk={handleSave}
         destroyOnClose
         centered
+        afterClose={() => {
+          form.resetFields();
+        }}
       >
         <Form
           form={form}

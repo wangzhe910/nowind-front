@@ -76,27 +76,26 @@ const PageApp = (props) => {
     {
       title: '回调地址',
       dataIndex: 'callBackUrl',
-      // width: 120,
       render: (text) => {
-        return <div style={{ width: 170, overflowX: 'auto' }}>{text}</div>;
+        return <div style={{ width: 220, overflowX: 'auto' }}>{text}</div>;
       },
     },
     {
       title: '描述',
       dataIndex: 'description',
     },
-    {
-      title: '状态',
-      dataIndex: 'status',
-      width: 80,
-      render: (text) => {
-        return text ? (
-          <Tag color="#87d068">已启用</Tag>
-        ) : (
-          <Tag color="#f50">已禁用</Tag>
-        );
-      },
-    },
+    // {
+    //   title: '状态',
+    //   dataIndex: 'status',
+    //   width: 80,
+    //   render: (text) => {
+    //     return text ? (
+    //       <Tag color="#87d068">已启用</Tag>
+    //     ) : (
+    //       <Tag color="#f50">已禁用</Tag>
+    //     );
+    //   },
+    // },
     {
       title: '更新时间',
       dataIndex: 'updateTime',
@@ -104,7 +103,7 @@ const PageApp = (props) => {
     },
     {
       title: '操作',
-      width: 130,
+      width: 65,
       render: (_, record) => {
         return (
           <div>
@@ -117,14 +116,14 @@ const PageApp = (props) => {
             >
               编辑
             </span>
-            <Popconfirm
+            {/* <Popconfirm
               title="确定删除该项吗?"
               onConfirm={() => handleDelete(record.id)}
             >
               <span className="global_span" style={{ color: 'red' }}>
                 删除
               </span>
-            </Popconfirm>
+            </Popconfirm> */}
           </div>
         );
       },
